@@ -2,6 +2,7 @@ package com.cobolk.shortener.service.impl;
 
 import com.cobolk.shortener.domain.ShortenUrlRequest;
 import com.cobolk.shortener.domain.entity.Url;
+import com.cobolk.shortener.exception.ShortCodeNotFoundException;
 import com.cobolk.shortener.exception.UrlNotValidException;
 import com.cobolk.shortener.repositories.UrlRepository;
 import com.cobolk.shortener.service.UrlService;
@@ -35,14 +36,21 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public URI getRedirectionUri(String shortCode) {
-        String urlToBeParsed = urlRepository.findUrlByShortCode(shortCode)
-            .map(Url::getMainUrl)
-            .orElse("/");
-        return URI.create(urlToBeParsed);
+        Url url = urlRepository.findUrlByShortCode(shortCode)
+            .orElseThrow(() -> new ShortCodeNotFoundException(shortCode));
+
+        incrementClickCount(url);
+
+        return URI.create(url.getMainUrl());
     }
 
     private String generateShortUrl() {
         return RandomStringUtils.secure().nextAlphanumeric(8);
+    }
+    
+    private void incrementClickCount(Url url) {
+        url.setClickedCount(url.getClickedCount() + 1);
+        urlRepository.save(url);
     }
 
 }

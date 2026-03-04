@@ -14,4 +14,11 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.BAD_REQUEST)
             .body(e.getMessage());
     }
+
+    @ExceptionHandler(ShortCodeNotFoundException.class)
+    public ResponseEntity<String> handleShortCodeNotFound(ShortCodeNotFoundException e) {
+        return  ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
+    }
 }

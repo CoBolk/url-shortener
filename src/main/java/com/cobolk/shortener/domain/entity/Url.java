@@ -32,4 +32,7 @@ public class Url {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "clicked_count", nullable = false)
+    private Integer clickedCount = 0;
+
 }
