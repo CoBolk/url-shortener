@@ -110,4 +110,34 @@ public class UrlServiceTest {
             .isInstanceOf(ShortCodeNotFoundException.class);
     }
 
+    @Test
+    void deleteUrl_shouldDeleteUrl_whenShortCodeIsValid() {
+
+        String shortCode = "test123";
+
+        Url testUrl = Url.builder()
+            .mainUrl("https://google.com")
+            .shortCode("test123")
+            .build();
+
+        when(urlRepository.findUrlByShortCode(shortCode))
+            .thenReturn(Optional.of(testUrl));
+
+        urlService.deleteUrl(shortCode);
+
+        verify(urlRepository).delete(testUrl);
+    }
+
+    @Test
+    void deleteUrl_shouldThrowException_whenShortCodeIsInvalid() {
+
+        String shortCode = "test123";
+
+        when(urlRepository.findUrlByShortCode(shortCode))
+            .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> urlService.deleteUrl(shortCode))
+            .isInstanceOf(ShortCodeNotFoundException.class);
+    }
+
 }

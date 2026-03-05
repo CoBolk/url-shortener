@@ -44,6 +44,14 @@ public class UrlServiceImpl implements UrlService {
         return URI.create(url.getMainUrl());
     }
 
+    @Override
+    public void deleteUrl(String shortCode) {
+        Url url = urlRepository.findUrlByShortCode(shortCode)
+            .orElseThrow(() -> new ShortCodeNotFoundException(shortCode));
+
+        urlRepository.delete(url);
+    }
+
     private String generateShortUrl() {
         return RandomStringUtils.secure().nextAlphanumeric(8);
     }

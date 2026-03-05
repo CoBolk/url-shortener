@@ -9,4 +9,6 @@ public interface UrlService {
     Url shortenUrl(ShortenUrlRequest request);
 
     URI getRedirectionUri(String shortCode);
+
+    void deleteUrl(String shortCode);
 }
