@@ -1,5 +1,6 @@
 package com.cobolk.shortener.service.impl;
 
+import com.cobolk.shortener.config.UrlProperties;
 import com.cobolk.shortener.domain.ShortenUrlRequest;
 import com.cobolk.shortener.domain.entity.Url;
 import com.cobolk.shortener.exception.ShortCodeNotFoundException;
@@ -18,6 +19,7 @@ import java.net.URI;
 public class UrlServiceImpl implements UrlService {
 
     private final UrlRepository urlRepository;
+    private final UrlProperties urlProperties;
 
     @Override
     public Url shortenUrl(ShortenUrlRequest request) {
@@ -53,7 +55,7 @@ public class UrlServiceImpl implements UrlService {
     }
 
     private String generateShortUrl() {
-        return RandomStringUtils.secure().nextAlphanumeric(8);
+        return RandomStringUtils.secure().nextAlphanumeric(urlProperties.getShortCodeLength());
     }
     
     private void incrementClickCount(Url url) {

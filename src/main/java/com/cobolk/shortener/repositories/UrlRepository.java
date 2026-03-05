@@ -1,9 +1,12 @@
 package com.cobolk.shortener.repositories;
 
 import com.cobolk.shortener.domain.entity.Url;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,4 +16,8 @@ public interface UrlRepository extends JpaRepository<Url, UUID> {
     Optional<Url> findUrlByMainUrl(String mainUrl);
 
     Optional<Url> findUrlByShortCode(String shortCode);
+
+    @Modifying
+    @Transactional
+    void deleteUrlByCreatedAtBefore(LocalDateTime date);
 }
