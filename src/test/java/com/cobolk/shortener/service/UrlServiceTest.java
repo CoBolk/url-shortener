@@ -35,7 +35,7 @@ public class UrlServiceTest {
     void shortenUrl_shouldThrowUrlNotValidException_whenUrlIsInvalid() {
 
         ShortenUrlRequest shortenUrlRequest = new ShortenUrlRequest();
-        shortenUrlRequest.setUrl("NOT-A-URL");
+        shortenUrlRequest.setUrl("not-a-url-123");
 
         assertThatThrownBy(() ->
             urlService.shortenUrl(shortenUrlRequest))
@@ -87,7 +87,7 @@ public class UrlServiceTest {
         Url testUrl = Url.builder()
             .mainUrl("https://google.com")
             .shortCode("test123")
-            .clickedCount(0) // On part de 0
+            .clickedCount(0)
             .build();
 
         when(urlRepository.findUrlByShortCode(shortCode))
