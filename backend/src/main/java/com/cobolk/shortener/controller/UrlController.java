@@ -17,7 +17,7 @@ public class UrlController {
 
     private final UrlService urlService;
 
-    @PostMapping(path = "/shorten")
+    @PostMapping(path = "/api/shorten")
     public ResponseEntity<ShortenUrlResponseDto> shortenUrl(@RequestBody ShortenUrlRequestDto dto)
     {
         ShortenUrlRequest shortenUrlRequest = UrlMapper.toRequest(dto);

@@ -1,0 +1,71 @@
+$button-color: rgb(69, 134, 255);
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.wrapper {
+  padding: 1.5rem 8rem 3rem 8rem;
+  background-color: rgb(61, 61, 65);
+  border: 2px solid rgb(37, 36, 37);
+  border-radius: 5px;
+}
+
+.wrapper h1 {
+  margin: 0 0 2rem 0;
+}
+
+.title {
+  color: rgb(225, 225, 225);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  font-size: medium;
+  width: min(25rem, 80dvw);
+}
+
+.field input {
+  padding: 0.5rem;
+  flex-grow: 1;
+  font-size: inherit;
+  border: 2px solid gray;
+  border-radius: 7px 0px 0px 7px;
+  border-right: none;
+}
+
+.field button {
+  border: 2px solid $button-color;
+  background-color: $button-color;
+  color: beige;
+  border-radius: 0px 7px 7px 0px;
+  border-left: none;
+  font-size: inherit;
+  padding-right: 0.5rem;
+  width: 5rem;
+  cursor: pointer;
+}
+
+.error {
+  margin-top: 0.25rem;
+  color: rgb(243, 118, 118);
+  font-size: small;
+}
+
+#url-error {
+  padding-left: 0.5rem;
+}
+
+.result {
+  padding-top: 2rem;
+}

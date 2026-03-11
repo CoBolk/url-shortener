@@ -1,6 +1,6 @@
 import { Component, Inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UrlService } from './services/url.service';
+import { UrlService } from './services/url-shortener.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +10,4 @@ import { UrlService } from './services/url.service';
 })
 export class App {
   protected readonly title = signal('URL_frontend');
-
-  constructor(private urlService: UrlService) {
-    this.urlService.testCors().subscribe({
-      next: (data: any) => console.log('CORS working !', data),
-      error: (err: any) => console.error('CORS not working', err),
-    });
-  }
 }

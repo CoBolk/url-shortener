@@ -1,0 +1,42 @@
+<main class="container">
+  <div class="wrapper">
+    <h1 class="title">Paste the URL to be shortened</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="field">
+        <input
+          id="url-input"
+          type="url"
+          formControlName="url"
+          placeholder="https://example.com"
+        />
+
+        <button type="submit" [disabled]="isLoading()">
+          {{ isLoading() ? 'Loading...' : 'Shorten' }}
+        </button>
+      </div>
+
+      @if (isFieldInvalid) {
+        <p id="url-error" class="error">
+          Please enter a valid URL (ex: https://example.com)
+        </p>
+      }
+    </form>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (result()) {
+      <section class="result">
+        <h2 class="title">Shortened URL</h2>
+        <div class="field result-row">
+          <input [value]="result()!.shortUrl" />
+          <button type="button" (click)="copyToClipboard(result()!.shortUrl)">
+            {{ copied() ? 'Copied' : 'Copy' }}
+          </button>
+        </div>
+      </section>
+    }
+  </div>
+</main>

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ShortenUrlResponseDto {
 
-    private String shortUrl;
+    private String shortCode;
 }

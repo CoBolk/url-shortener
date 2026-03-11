@@ -15,7 +15,7 @@ public class UrlMapper {
 
     public static ShortenUrlResponseDto toDto(Url url) {
         ShortenUrlResponseDto shortenUrlResponseDto = new ShortenUrlResponseDto();
-        shortenUrlResponseDto.setShortUrl(url.getShortCode());
+        shortenUrlResponseDto.setShortCode(url.getShortCode());
         return shortenUrlResponseDto;
     }
 }

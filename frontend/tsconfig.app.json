@@ -6,6 +6,6 @@
     "outDir": "./out-tsc/app",
     "types": []
   },
-  "include": ["src/**/*.ts", "src/app/services/url.service.spec.ts"],
+  "include": ["src/**/*.ts", "src/app/services/url-shortener.service.spec.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }
