@@ -32,8 +32,13 @@
         <h2 class="title">Shortened URL</h2>
         <div class="field result-row">
           <input [value]="result()!.shortUrl" />
-          <button type="button" (click)="copyToClipboard(result()!.shortUrl)">
+          <button
+            type="button"
+            class="copy"
+            (click)="copyToClipboard(result()!.shortUrl)"
+          >
             {{ copied() ? 'Copied' : 'Copy' }}
+            <img src="copy.png" />
           </button>
         </div>
       </section>
