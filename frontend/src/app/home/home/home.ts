@@ -2,6 +2,8 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { UrlService } from '../../services/url-shortener.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UrlShortenResponse } from '../../models/url-shorten.model';
+import { ErrorResponse } from '../../models/error.model';
 
 interface ShortenResult {
   shortUrl: string;
@@ -19,7 +21,7 @@ export class Home {
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly result = signal<ShortenResult | null>(null);
+  readonly result = signal<UrlShortenResponse | null>(null);
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly copied = signal(false);
@@ -45,16 +47,15 @@ export class Home {
       .shorten(originalUrl)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: ({ shortCode }) => {
+        next: ({ urlShortCode }) => {
+          console.log('mainUrl: ' + urlShortCode);
           (this.result.set({
-            shortUrl: `${this.urlService.baseUrl}/${shortCode}`,
-            originalUrl,
+            urlShortCode: urlShortCode,
           }),
             this.isLoading.set(false));
         },
-        error: () => {
-          (this.errorMessage.set('An error has occured'),
-            this.isLoading.set(false));
+        error: (err: ErrorResponse) => {
+          (this.errorMessage.set(err.message), this.isLoading.set(false));
         },
       });
   }

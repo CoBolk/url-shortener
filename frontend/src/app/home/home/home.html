@@ -31,11 +31,11 @@
       <section class="result">
         <h2 class="title">Shortened URL</h2>
         <div class="field result-row">
-          <input [value]="result()!.shortUrl" />
+          <input [value]="result()!.urlShortCode" />
           <button
             type="button"
             class="copy"
-            (click)="copyToClipboard(result()!.shortUrl)"
+            (click)="copyToClipboard(result()!.urlShortCode)"
           >
             {{ copied() ? 'Copied' : 'Copy' }}
             <img src="copy.png" />

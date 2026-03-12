@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class UrlShortenRequestDto {
 
     @NotBlank(message = "An URL is required")
-    private String url;
+    private String mainUrl;
 }

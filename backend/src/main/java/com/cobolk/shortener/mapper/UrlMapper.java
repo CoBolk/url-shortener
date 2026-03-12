@@ -19,7 +19,7 @@ public class UrlMapper {
 
     public UrlShortenRequest toRequest(UrlShortenRequestDto dto) {
         UrlShortenRequest request = new UrlShortenRequest();
-        request.setUrl(dto.getUrl());
+        request.setUrl(dto.getMainUrl());
         return request;
     }
 
