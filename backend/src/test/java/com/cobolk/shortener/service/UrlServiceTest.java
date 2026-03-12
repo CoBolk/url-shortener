@@ -1,7 +1,9 @@
 package com.cobolk.shortener.service;
 
-import com.cobolk.shortener.domain.ShortenUrlRequest;
+import com.cobolk.shortener.domain.UrlShortenRequest;
+import com.cobolk.shortener.domain.UrlStatsRequest;
 import com.cobolk.shortener.domain.entity.Url;
+import com.cobolk.shortener.exception.MainUrlNotFoundException;
 import com.cobolk.shortener.exception.ShortCodeNotFoundException;
 import com.cobolk.shortener.exception.UrlNotValidException;
 import com.cobolk.shortener.repositories.UrlRepository;
@@ -34,11 +36,11 @@ public class UrlServiceTest {
     @Test
     void shortenUrl_shouldThrowUrlNotValidException_whenUrlIsInvalid() {
 
-        ShortenUrlRequest shortenUrlRequest = new ShortenUrlRequest();
-        shortenUrlRequest.setUrl("not-a-url-123");
+        UrlShortenRequest urlShortenRequest = new UrlShortenRequest();
+        urlShortenRequest.setUrl("not-a-url-123");
 
         assertThatThrownBy(() ->
-            urlService.shortenUrl(shortenUrlRequest))
+            urlService.shortenUrl(urlShortenRequest))
             .isInstanceOf(UrlNotValidException.class);
 
     }
@@ -46,8 +48,8 @@ public class UrlServiceTest {
     @Test
     void shortenUrl_shouldCreateShortCode_whenUrlIsValid() {
 
-        ShortenUrlRequest shortenUrlRequest = new ShortenUrlRequest();
-        shortenUrlRequest.setUrl("https://google.com");
+        UrlShortenRequest urlShortenRequest = new UrlShortenRequest();
+        urlShortenRequest.setUrl("https://google.com");
 
         when(urlRepository.findUrlByMainUrl("https://google.com"))
             .thenReturn(Optional.empty());
@@ -55,7 +57,7 @@ public class UrlServiceTest {
         when(urlRepository.save(any(Url.class)))
             .thenAnswer(invocation -> invocation.getArgument(0));
 
-        Url url = urlService.shortenUrl(shortenUrlRequest);
+        Url url = urlService.shortenUrl(urlShortenRequest);
 
         assertThat(url.getShortCode()).isNotNull();
     }
@@ -138,6 +140,37 @@ public class UrlServiceTest {
 
         assertThatThrownBy(() -> urlService.deleteUrl(shortCode))
             .isInstanceOf(ShortCodeNotFoundException.class);
+    }
+
+    @Test
+    void getStats_shouldProvideClickCount_whenMainUrlIsValid() {
+
+        UrlStatsRequest urlStatsRequest = new UrlStatsRequest("https://google.com");
+
+        String mainUrl = urlStatsRequest.getMainUrl();
+
+        Url testUrl = Url.builder()
+            .mainUrl("https://google.com")
+            .shortCode("test123")
+            .clickedCount(2)
+            .build();
+
+        when(urlRepository.findUrlByMainUrl(mainUrl))
+            .thenReturn(Optional.of(testUrl));
+
+        int statsTest = urlService.getStats(urlStatsRequest);
+
+        assertThat(statsTest).isEqualTo(testUrl.getClickedCount());
+    }
+
+    @Test
+    void getStats_shouldThrowMainUrlNotFoundException_whenMainUrlNotFound() {
+
+        UrlStatsRequest urlStatsRequest = new UrlStatsRequest("https://google.com");
+
+        assertThatThrownBy(() ->
+            urlService.getStats(urlStatsRequest))
+            .isInstanceOf(MainUrlNotFoundException.class);
     }
 
 }

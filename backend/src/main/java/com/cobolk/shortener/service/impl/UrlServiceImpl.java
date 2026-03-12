@@ -1,9 +1,11 @@
 package com.cobolk.shortener.service.impl;
 
 import com.cobolk.shortener.config.UrlProperties;
-import com.cobolk.shortener.domain.ShortenUrlRequest;
+import com.cobolk.shortener.domain.UrlShortenRequest;
+import com.cobolk.shortener.domain.UrlStatsRequest;
 import com.cobolk.shortener.domain.entity.Url;
 import com.cobolk.shortener.exception.ShortCodeNotFoundException;
+import com.cobolk.shortener.exception.MainUrlNotFoundException;
 import com.cobolk.shortener.exception.UrlNotValidException;
 import com.cobolk.shortener.repositories.UrlRepository;
 import com.cobolk.shortener.service.UrlService;
@@ -22,7 +24,7 @@ public class UrlServiceImpl implements UrlService {
     private final UrlProperties urlProperties;
 
     @Override
-    public Url shortenUrl(ShortenUrlRequest request) {
+    public Url shortenUrl(UrlShortenRequest request) {
         String url = request.getUrl();
         if (!UrlUtil.isValid(url)) throw new UrlNotValidException(url);
 
@@ -52,6 +54,15 @@ public class UrlServiceImpl implements UrlService {
             .orElseThrow(() -> new ShortCodeNotFoundException(shortCode));
 
         urlRepository.delete(url);
+    }
+
+    @Override
+    public int getStats(UrlStatsRequest request) {
+        String mainUrl = request.getMainUrl();
+        Url url = urlRepository.findUrlByMainUrl(mainUrl)
+            .orElseThrow(() -> new MainUrlNotFoundException(mainUrl));
+
+        return url.getClickedCount();
     }
 
     private String generateShortUrl() {
