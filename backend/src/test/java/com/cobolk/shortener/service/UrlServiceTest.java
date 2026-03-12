@@ -1,5 +1,6 @@
 package com.cobolk.shortener.service;
 
+import com.cobolk.shortener.config.UrlProperties;
 import com.cobolk.shortener.domain.UrlShortenRequest;
 import com.cobolk.shortener.domain.UrlStatsRequest;
 import com.cobolk.shortener.domain.entity.Url;
@@ -33,6 +34,9 @@ public class UrlServiceTest {
     @Mock
     private UrlRepository urlRepository;
 
+    @Mock
+    private UrlProperties urlProperties;
+
     @Test
     void shortenUrl_shouldThrowUrlNotValidException_whenUrlIsInvalid() {
 
@@ -54,6 +58,8 @@ public class UrlServiceTest {
         when(urlRepository.findUrlByMainUrl("https://google.com"))
             .thenReturn(Optional.empty());
 
+        when(urlProperties.getShortCodeLength()).thenReturn(8);
+
         when(urlRepository.save(any(Url.class)))
             .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -71,10 +77,12 @@ public class UrlServiceTest {
         Url testUrl = Url.builder()
             .mainUrl("https://google.com")
             .shortCode("test123")
+            .clickedCount(0)
             .build();
 
         when(urlRepository.findUrlByShortCode(shortCode))
             .thenReturn(Optional.of(testUrl));
+
 
         URI uriTest = urlService.getRedirectionUri(shortCode);
 

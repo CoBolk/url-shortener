@@ -13,4 +13,5 @@ public class UrlProperties {
 
     private int expirationDays;
     private int shortCodeLength;
+    private String domainName;
 }

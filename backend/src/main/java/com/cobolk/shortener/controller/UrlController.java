@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class UrlController {
 
     private final UrlService urlService;
+    private final UrlMapper urlMapper;
 
     @PostMapping(path = "/api/shorten")
     public ResponseEntity<UrlShortenResponseDto> shortenUrl(@RequestBody UrlShortenRequestDto dto)
     {
-        UrlShortenRequest urlShortenRequest = UrlMapper.toRequest(dto);
+        UrlShortenRequest urlShortenRequest = urlMapper.toRequest(dto);
         Url url = urlService.shortenUrl(urlShortenRequest);
-        UrlShortenResponseDto urlShortenResponseDto = UrlMapper.toDto(url);
+        UrlShortenResponseDto urlShortenResponseDto = urlMapper.toDto(url);
 
         return ResponseEntity.ok(urlShortenResponseDto);
     }
@@ -46,10 +47,10 @@ public class UrlController {
 
     @GetMapping(path = "/stats")
     public ResponseEntity<UrlStatsResponseDto> getStats(@RequestBody UrlStatsRequestDto dto) {
-        UrlStatsRequest urlStatsRequest = UrlMapper.toRequest(dto);
+        UrlStatsRequest urlStatsRequest = urlMapper.toRequest(dto);
         int clickedCount = urlService.getStats(urlStatsRequest);
 
-        UrlStatsResponseDto urlStatsResponseDto = UrlMapper.toDto(clickedCount);
+        UrlStatsResponseDto urlStatsResponseDto = urlMapper.toDto(clickedCount);
         return ResponseEntity.ok(urlStatsResponseDto);
     }
 }
